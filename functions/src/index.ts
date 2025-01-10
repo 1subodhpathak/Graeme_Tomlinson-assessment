@@ -3,16 +3,15 @@ import * as admin from 'firebase-admin';
 import * as cors from 'cors';
 
 // Initialize Firebase Admin
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
+admin.initializeApp();
 
-// Define interfaces for type safety
+// Update interface to include optional uid
 interface CreateUserRequest {
   email: string;
   password: string;
   name: string;
-  gender: string;
+  gender: 'male' | 'female' | 'other';
+  uid?: string;  // Optional uid parameter
 }
 
 interface ErrorResponse {
@@ -44,7 +43,7 @@ export const createUser = functions.https.onRequest(async (req, res) => {
         return res.status(405).json(response);
       }
 
-      const { email, password, name, gender } = req.body as CreateUserRequest;
+      const { email, password, name, gender, uid } = req.body as CreateUserRequest;
 
       if (!email || !password || !name || !gender) {
         const response: ErrorResponse = {
@@ -56,13 +55,19 @@ export const createUser = functions.https.onRequest(async (req, res) => {
         return res.status(400).json(response);
       }
 
-      const userRecord = await admin.auth().createUser({
+      // Create user with optional uid
+      const userCreateOptions: admin.auth.CreateRequest = {
         email,
         password,
         displayName: name
-      });
+      };
+      
+      if (uid) {
+        userCreateOptions.uid = uid;
+      }
 
-      // Create the timestamp directly as a Date object
+      const userRecord = await admin.auth().createUser(userCreateOptions);
+
       await admin.firestore().collection('users').doc(userRecord.uid).set({
         name,
         email,
