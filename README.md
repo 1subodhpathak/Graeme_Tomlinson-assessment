@@ -1,5 +1,4 @@
 # Graeme_Tomlinson-assessment
-# Firebase User Creation Cloud Function
 
 A Firebase Cloud Function that creates users in Firebase Authentication and stores their additional information in Firestore. This project includes a test interface for creating users and demonstrates proper security rules implementation.
 
@@ -87,7 +86,7 @@ A Firebase Cloud Function that creates users in Firebase Authentication and stor
    - Emulator UI interface
 
 2. **Access the test interface**
-   - Open `http://localhost:5000/test.html` in your browser
+   - Open `http://localhost:8000/test.html` in your browser
    - The test interface allows you to create users with all required fields
 
 ## Deployment
@@ -173,7 +172,3 @@ The function handles various error cases:
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
