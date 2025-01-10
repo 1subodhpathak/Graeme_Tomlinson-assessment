@@ -16,6 +16,7 @@ A Firebase Cloud Function that creates users in Firebase Authentication and stor
 ## Prerequisites
 
 - Node.js (v18.x)
+- Python3
 - Firebase CLI (`npm install -g firebase-tools`)
 - Firebase project with Authentication and Firestore enabled
 
@@ -40,18 +41,21 @@ A Firebase Cloud Function that creates users in Firebase Authentication and stor
 ## Setup Instructions
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd <repository-name>
    ```
 
 2. **Install dependencies**
+
    ```bash
    cd functions
    npm install
    ```
 
 3. **Configure Firebase**
+
    - Copy `public/js/firebase-config-example.js` to `public/js/firebase-config.js`
    - Update the configuration with your Firebase project details:
      ```javascript
@@ -64,6 +68,7 @@ A Firebase Cloud Function that creates users in Firebase Authentication and stor
      ```
 
 4. **Login to Firebase**
+
    ```bash
    firebase login
    ```
@@ -76,27 +81,38 @@ A Firebase Cloud Function that creates users in Firebase Authentication and stor
 ## Local Development
 
 1. **Start the Firebase emulators**
+
    ```bash
    firebase emulators:start
    ```
+
    This will start:
+
    - Authentication emulator on port 9099
    - Functions emulator on port 5001
    - Firestore emulator on port 8081
    - Emulator UI interface
 
 2. **Access the test interface**
-   - Open `http://localhost:8000/test.html` in your browser
-   - The test interface allows you to create users with all required fields
+
+```bash
+cd public
+python3 -m http.server 8000
+```
+
+- Open `http://localhost:8000/test.html` in your browser
+- The test interface allows you to create users with all required fields
 
 ## Deployment
 
 Deploy the project to Firebase:
+
 ```bash
 firebase deploy
 ```
 
 To deploy only specific components:
+
 ```bash
 firebase deploy --only functions   # Deploy only functions
 firebase deploy --only firestore:rules   # Deploy only Firestore rules
@@ -105,7 +121,8 @@ firebase deploy --only firestore:rules   # Deploy only Firestore rules
 ## Testing
 
 1. **Using the Test Interface**
-   - Navigate to the test interface (local: `http://localhost:5000/test.html` or deployed version)
+
+   - Navigate to the test interface (local: `http://localhost:8000/test.html` or deployed version)
    - Fill in the required fields:
      - Email
      - Password
@@ -131,6 +148,7 @@ firebase deploy --only firestore:rules   # Deploy only Firestore rules
 ## Security Rules
 
 The Firestore security rules ensure that:
+
 - Only authenticated users can read their own documents
 - Users can only write to their own documents
 - Sub-collections are denied by default
@@ -138,6 +156,7 @@ The Firestore security rules ensure that:
 ## Error Handling
 
 The function handles various error cases:
+
 - Invalid request methods
 - Missing required fields
 - Duplicate emails
@@ -147,6 +166,7 @@ The function handles various error cases:
 ## Response Format
 
 ### Success Response
+
 ```json
 {
   "message": "User created successfully",
@@ -155,6 +175,7 @@ The function handles various error cases:
 ```
 
 ### Error Response
+
 ```json
 {
   "error": {
